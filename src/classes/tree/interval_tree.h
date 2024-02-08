@@ -1,13 +1,13 @@
+#pragma once
 #ifndef INTERVAL_TREE_H
 #define INTERVAL_TREE_H
 
-#include <memory>
 #ifdef __cplusplus
 #include "../../visualization/tree_visual/tree_visualization.h"
+#include <functional>
 #include <iostream>
 #include <memory>
 #include <vector>
-#include <functional>
 #endif
 
 /**
@@ -26,6 +26,27 @@ public:
         this->insert({x.first, x.second});
       }
     }
+  }
+
+  /**
+   * @brief Copy constructor for interval tree class
+   *
+   * @param i the tree we want to copy
+   */
+  explicit interval_tree(const interval_tree &i) {
+    root = i.root;
+    __size = i.__size;
+  }
+
+  /**
+   * @brief operator = for interval tree class
+   * @param i the tree we want to copy
+   * @return interval_tree&
+   */
+  interval_tree &operator=(const interval_tree &i) {
+    root = i.root;
+    __size = i.__size;
+    return *this;
   }
 
   ~interval_tree() { root = nullptr; }
@@ -157,7 +178,7 @@ public:
 
   void visualize() {
     std::string __generated = generate_visualization();
-    visualization::visualize(__generated);
+    tree_visualization::visualize(__generated);
   }
 
   /**
@@ -433,6 +454,29 @@ public:
   Iterator operator++(int) {
     Iterator it = *this;
     ++*(this);
+    return it;
+  }
+
+  /**
+   * @brief operator -- for type Iterator
+   *
+   * @return Iterator&
+   */
+  Iterator &operator--() {
+    if (this->index > 0) {
+      this->index--;
+    }
+    return *(this);
+  }
+
+  /**
+   * @brief operator -- for type Iterator
+   *
+   * @return Iterator
+   */
+  Iterator operator--(int) {
+    Iterator it = *this;
+    --*(this);
     return it;
   }
 

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef STACK_H
 #define STACK_H
 
@@ -41,6 +42,26 @@ public:
         this->push(x);
       }
     }
+  }
+
+  /**
+   * @brief Copy constructor for stack list class
+   * @param s the stack we want to copy
+   */
+  explicit stack_list(const stack_list &s) {
+    root = s.root;
+    __size = s.__size;
+  }
+
+  /**
+   * @brief operator = for stack list class
+   * @param s the stack we want to copy
+   * @return stack_list&
+   */
+  stack_list &operator=(const stack_list &s) {
+    root = s.root;
+    __size = s.__size;
+    return *this;
   }
 
   /**

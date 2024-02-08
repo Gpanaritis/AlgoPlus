@@ -1,3 +1,4 @@
+#pragma once
 #ifndef TRIE_H
 #define TRIE_H
 
@@ -33,6 +34,26 @@ public:
         this->insert(x);
       }
     }
+  }
+
+  /**
+   * @brief Copy constructor for trie class
+   * @param t the tree we want to copy
+   */
+  explicit trie(const trie &t) {
+    root = t.root;
+    __size = t.__size;
+  }
+
+  /**
+   * @brief operator = for trie class
+   * @param t the tree we want to copy
+   * @return trie&
+   */
+  trie &operator=(const trie &t) {
+    root = t.root;
+    __size = t.__size;
+    return *this;
   }
 
   /**

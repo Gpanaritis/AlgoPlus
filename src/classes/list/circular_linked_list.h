@@ -1,9 +1,12 @@
+#pragma once
 #ifndef CIRCULAR_LINKED_LIST_H
 #define CIRCULAR_LINKED_LIST_H
 
 #ifdef __cplusplus
+#include "../../visualization/list_visual/linked_list_visualization.h"
 #include <iostream>
 #include <memory>
+#include <type_traits>
 #include <vector>
 #endif
 
@@ -24,6 +27,28 @@ public:
         this->push_back(x);
       }
     }
+  }
+
+  /**
+   * @brief copy constructor for the circular linked list class
+   * @param c the list we want to copy
+   */
+  explicit circular_linked_list(const circular_linked_list &c) {
+    root = c.root;
+    tail = c.tail;
+    __size = c.__size;
+  }
+
+  /**
+   * @brief operator = for circular linked list class
+   * @param c the list we want to copy
+   * @return circular_linked_list&
+   */
+  circular_linked_list &operator=(const circular_linked_list &c) {
+    root = c.root;
+    tail = c.tail;
+    __size = c.__size;
+    return *this;
   }
 
   /**
@@ -95,6 +120,12 @@ public:
   std::vector<T> elements();
 
   /**
+   * @brief visualize function
+   * returns a .dot file that can be previewd with graphviz plugin in vscode
+   */
+  void visualize();
+
+  /**
    * @brief << operator for the circular list class
    */
   friend std::ostream &operator<<(std::ostream &out,
@@ -124,6 +155,8 @@ private:
   std::shared_ptr<node> root;
   std::shared_ptr<node> tail;
   size_t __size;
+
+  std::string generate();
 };
 
 template <typename T> void circular_linked_list<T>::push_back(T key) {
@@ -218,6 +251,65 @@ template <typename T> std::vector<T> circular_linked_list<T>::elements() {
 
   return __elements;
 }
+
+template <typename T> std::string circular_linked_list<T>::generate() {
+  std::string gen;
+  gen += "rankdir=LR;";
+  gen += '\n';
+  gen += "node [shape=record;]";
+  gen += '\n';
+  std::vector<T> els = this->elements();
+  if (std::is_same_v<T, std::string> || std::is_same_v<T, char>) {
+    for (auto &x : els) {
+      gen += x;
+      gen += " [label=<{ ";
+      gen += x;
+      gen += " | }>] ;";
+      gen += '\n';
+    }
+
+    std::shared_ptr<node> curr = root;
+    while (curr->next) {
+      gen += curr->val;
+      gen += ":ref -> ";
+      gen += curr->next->val;
+      gen += ":data [arrowhead=vee, arrowtail=dot, dir=both];";
+      gen += '\n';
+      curr = curr->next;
+      if (curr == root) {
+        break;
+      }
+    }
+  } else {
+    for (auto &x : els) {
+      gen += std::to_string(x);
+      gen += " [label=<{ ";
+      gen += std::to_string(x);
+      gen += " | }>] ;";
+      gen += '\n';
+    }
+
+    std::shared_ptr<node> curr = root;
+    while (curr->next) {
+      gen += std::to_string(curr->val);
+      gen += ":ref -> ";
+      gen += std::to_string(curr->next->val);
+      gen += ":data [arrowhead=vee, arrowtail=dot, dir=both];";
+      gen += '\n';
+      curr = curr->next;
+      if (curr == root) {
+        break;
+      }
+    }
+  }
+  return gen;
+}
+
+template <typename T> void circular_linked_list<T>::visualize() {
+  std::string generated = this->generate();
+  linked_list_visualization::visualize(generated);
+}
+
 /**
  * @brief Iterator class
  */

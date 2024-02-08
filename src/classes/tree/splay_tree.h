@@ -1,12 +1,13 @@
+#pragma once
 #ifndef SPLAY_TREE_H
 #define SPLAY_TREE_H
 
 #ifdef __cplusplus
 #include "../../visualization/tree_visual/tree_visualization.h"
+#include <functional>
 #include <iostream>
 #include <memory>
 #include <vector>
-#include <functional>
 #endif
 
 /**
@@ -42,6 +43,26 @@ public:
         this->insert(x);
       }
     }
+  }
+
+  /**
+   * @brief Copy constructor for splay tree class
+   * @param s the tree we want to copy
+   */
+  explicit splay_tree(const splay_tree &s) {
+    root = s.root;
+    __size = s.__size;
+  }
+
+  /**
+   * @brief operator = for splay tree class
+   * @param s the tree we want to copy
+   * @return splay_tree&
+   */
+  splay_tree &operator=(const splay_tree &s) {
+    root = s.root;
+    __size = s.__size;
+    return *this;
   }
 
   ~splay_tree() { root = nullptr; }
@@ -153,7 +174,7 @@ public:
    */
   void visualize() {
     std::string __generated = generate_visualization();
-    visualization::visualize(__generated);
+    tree_visualization::visualize(__generated);
   }
 
 private:
@@ -358,6 +379,29 @@ public:
   Iterator operator++(int) {
     Iterator it = *this;
     ++*(this);
+    return it;
+  }
+
+  /**
+   * @brief operator -- for type Iterator
+   *
+   * @return Iterator&
+   */
+  Iterator &operator--() {
+    if (this->index > 0) {
+      this->index--;
+    }
+    return *(this);
+  }
+
+  /**
+   * @brief operator -- for type Iterator
+   *
+   * @return Iterator
+   */
+  Iterator operator--(int) {
+    Iterator it = *this;
+    --*(this);
     return it;
   }
 

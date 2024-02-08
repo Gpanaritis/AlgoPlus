@@ -1,3 +1,4 @@
+#pragma once
 #ifndef BST_H
 #define BST_H
 
@@ -28,6 +29,27 @@ public:
       }
     }
   }
+
+  /**
+   * @brief Copy constructor for bst class
+   * @param b the tree we want to copy
+   */
+  explicit bst(const bst &b) {
+    root = b.root;
+    __size = b.__size;
+  }
+
+  /**
+   * @brief operator = for bst class
+   * @param b the tree we want to copy
+   * @return bst&
+   */
+  bst &operator=(const bst &b) {
+    root = b.root;
+    __size = b.__size;
+    return *this;
+  }
+
   ~bst() noexcept { root = nullptr; }
 
   /**
@@ -140,7 +162,7 @@ public:
    */
   void visualize() {
     std::string __generated = generate_visualization();
-    visualization::visualize(__generated);
+    tree_visualization::visualize(__generated);
   }
 
 private:
@@ -334,6 +356,29 @@ public:
   Iterator operator++(int) {
     Iterator it = *this;
     ++*(this);
+    return it;
+  }
+
+  /**
+   * @brief operator -- for type Iterator
+   *
+   * @return Iterator&
+   */
+  Iterator &operator--() {
+    if (this->index > 0) {
+      this->index--;
+    }
+    return *(this);
+  }
+
+  /**
+   * @brief operator -- for type Iterator
+   *
+   * @return Iterator
+   */
+  Iterator operator--(int) {
+    Iterator it = *this;
+    --*(this);
     return it;
   }
 

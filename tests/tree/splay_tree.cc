@@ -2,7 +2,7 @@
 #include "../catch2/catch.hpp"
 #include <string>
 
-TEST_CASE("testing insertion") {
+TEST_CASE("testing insertion in splay tree") {
   splay_tree<int> s;
   s.insert(10);
   s.insert(12);
@@ -15,7 +15,7 @@ TEST_CASE("testing insertion") {
   REQUIRE(els == check);
 }
 
-TEST_CASE("testing remove") {
+TEST_CASE("testing remove in splay tree") {
   splay_tree<int> s;
   s.insert(10);
   s.insert(12);
@@ -34,7 +34,7 @@ TEST_CASE("testing remove") {
   REQUIRE(s.search(15) == true);
 }
 
-TEST_CASE("testing size") {
+TEST_CASE("testing size in splay tree") {
   splay_tree<int> s;
   s.insert(10);
   s.insert(12);
@@ -51,7 +51,7 @@ TEST_CASE("testing size") {
   REQUIRE(s2.size() == 6);
 }
 
-TEST_CASE("testing clear function") {
+TEST_CASE("testing clear function in splay tree") {
   splay_tree<int> s;
   s.insert(10);
   s.insert(12);
@@ -64,7 +64,7 @@ TEST_CASE("testing clear function") {
   REQUIRE(els.size() == 0);
 }
 
-TEST_CASE("testing iterators") {
+TEST_CASE("testing iterators in splay tree") {
   splay_tree<int> s;
   s.insert(10);
   s.insert(12);
@@ -78,4 +78,34 @@ TEST_CASE("testing iterators") {
     check.push_back(*(it));
   }
   REQUIRE(check == v);
+
+  splay_tree<int> tree;
+  tree.insert(1);
+  tree.insert(4);
+  tree.insert(2);
+  tree.insert(3);
+  std::vector<int> v2;
+  auto it = tree.end();
+  it--;
+  for (; it != tree.begin(); it--) {
+    v2.push_back(*(it));
+  }
+  v2.push_back(*(it));
+  std::vector<int> check3 = {4, 3, 2, 1};
+  REQUIRE(v2 == check3);
+}
+
+TEST_CASE("testing copy constructor for splay tree class") {
+  splay_tree<char> s({'a', 'w', 'g', 'o', 's', 'v'});
+  splay_tree<char> s2(s);
+  REQUIRE(s.inorder() == s2.inorder());
+  REQUIRE(s.preorder() == s2.preorder());
+}
+
+TEST_CASE("testing operator = for splay tree class") {
+  splay_tree<char> s({'a', 'w', 'g', 'o', 's', 'v'});
+  splay_tree<char> s2;
+  s2 = s;
+  REQUIRE(s.inorder() == s2.inorder());
+  REQUIRE(s.preorder() == s2.preorder());
 }

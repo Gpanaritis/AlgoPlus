@@ -2,7 +2,7 @@
 #include "../catch2/catch.hpp"
 #include <string>
 
-TEST_CASE("checking insertions and traversals") {
+TEST_CASE("checking insertions and traversals in avl") {
   avl_tree<int> a1;
 
   a1.insert(10);
@@ -14,7 +14,7 @@ TEST_CASE("checking insertions and traversals") {
   REQUIRE(v == inorder);
 }
 
-TEST_CASE("checking search") {
+TEST_CASE("checking search in avl") {
   avl_tree<std::string> a;
   a.insert("hello");
   a.insert("world");
@@ -24,7 +24,7 @@ TEST_CASE("checking search") {
   REQUIRE(a.search("im") == false);
 }
 
-TEST_CASE("checking removals") {
+TEST_CASE("checking removals in avl") {
   avl_tree<int> a1;
   a1.insert(10);
   a1.insert(2);
@@ -37,7 +37,7 @@ TEST_CASE("checking removals") {
   REQUIRE(v == inorder);
 }
 
-TEST_CASE("checking inorder") {
+TEST_CASE("checking inorder in avl") {
   avl_tree<char> a2;
   a2.insert('g');
   a2.insert('d');
@@ -57,7 +57,7 @@ TEST_CASE("checking inorder") {
   REQUIRE(__v == __inorder);
 }
 
-TEST_CASE("checking preorder") {
+TEST_CASE("checking preorder in avl") {
   avl_tree<int> a;
   a.insert(10);
   a.insert(5);
@@ -67,7 +67,7 @@ TEST_CASE("checking preorder") {
   REQUIRE(a.preorder() == __preorder);
 }
 
-TEST_CASE("checking postorder") {
+TEST_CASE("checking postorder in avl") {
   avl_tree<int> a;
   a.insert(10);
   a.insert(5);
@@ -77,7 +77,7 @@ TEST_CASE("checking postorder") {
   REQUIRE(a.postorder() == __postorder);
 }
 
-TEST_CASE("testing iterators") {
+TEST_CASE("testing iterators in avl") {
   avl_tree<int> a({8, 4, 3, 1, 5, 6});
   std::vector<int> els = a.inorder();
   std::vector<int> check;
@@ -95,9 +95,24 @@ TEST_CASE("testing iterators") {
   }
 
   REQUIRE(check2 == els2);
+
+  avl_tree<int> tree;
+  tree.insert(1);
+  tree.insert(2);
+  tree.insert(3);
+  tree.insert(4);
+  std::vector<int> v;
+  auto it = tree.end();
+  it--;
+  for (; it != tree.begin(); it--) {
+    v.push_back(*(it));
+  }
+  v.push_back(*(it));
+  std::vector<int> check3 = {4, 3, 2, 1};
+  REQUIRE(v == check3);
 }
 
-TEST_CASE("testing clear function") {
+TEST_CASE("testing clear function in avl") {
   avl_tree<char> a({'g', 'w', 'h', 'p', 'u'});
   a.clear();
   std::vector<char> v = a.inorder();
@@ -108,4 +123,19 @@ TEST_CASE("testing clear function") {
   std::vector<char> v2 = a.inorder();
   std::vector<char> check = {'a', 'g', 'w'};
   REQUIRE(v2 == check);
+}
+
+TEST_CASE("testing copy constructor for avl tree class") {
+  avl_tree<int> a({8, 4, 3, 1, 5, 6});
+  avl_tree<int> b(a);
+  REQUIRE(a.inorder() == b.inorder());
+  REQUIRE(a.preorder() == b.preorder());
+}
+
+TEST_CASE("testing operator = for avl tree class") {
+  avl_tree<int> a({8, 4, 3, 1, 5, 6});
+  avl_tree<int> b;
+  b = a;
+  REQUIRE(a.inorder() == b.inorder());
+  REQUIRE(a.preorder() == b.preorder());
 }

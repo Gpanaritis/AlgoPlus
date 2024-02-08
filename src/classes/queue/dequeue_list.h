@@ -1,3 +1,4 @@
+#pragma once
 #ifndef QUEUE_H
 #define QUEUE_H
 
@@ -42,6 +43,29 @@ public:
         this->push_back(x);
       }
     }
+  }
+
+  /**
+   * @brief Copy constructor for dequeue list class
+   *
+   * @param q the dequeue we want to copy
+   */
+  explicit dequeue_list(const dequeue_list &q) {
+    root = q.root;
+    tail = q.tail;
+    __size = q.__size;
+  }
+
+  /**
+   * @brief operator = for dequeue list class
+   * @param q the dequeue we want to copy
+   * @return dequeue_list&
+   */
+  dequeue_list &operator=(const dequeue_list &q) {
+    root = q.root;
+    tail = q.tail;
+    __size = q.__size;
+    return *this;
   }
 
   /**

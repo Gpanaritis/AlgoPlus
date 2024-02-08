@@ -1,3 +1,4 @@
+#pragma once
 #ifndef HASH_TABLE_H
 #define HASH_TABLE_H
 
@@ -8,6 +9,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <cstdint>
 
 /**
  * @class hash_table
@@ -204,6 +206,29 @@ public:
   Iterator operator++(int) {
     Iterator it = *this;
     ++*(this);
+    return it;
+  }
+
+  /**
+   * @brief operator -- for type Iterator
+   *
+   * @return Iterator&
+   */
+  Iterator &operator--() {
+    if (this->index > 0) {
+      this->index--;
+    }
+    return *(this);
+  }
+
+  /**
+   * @brief operator -- for type Iterator
+   *
+   * @return Iterator
+   */
+  Iterator operator--(int) {
+    Iterator it = *this;
+    --*(this);
     return it;
   }
 

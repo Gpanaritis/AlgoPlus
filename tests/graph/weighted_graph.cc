@@ -2,7 +2,7 @@
 #include "../catch2/catch.hpp"
 #include <string>
 
-TEST_CASE("testing clearing of a graph") {
+TEST_CASE("testing clearing of a weighted graph") {
   weighted_graph<int> g("directed");
   g.add_edge(1, 2, 4);
   g.add_edge(2, 3, 4);
@@ -14,7 +14,7 @@ TEST_CASE("testing clearing of a graph") {
   REQUIRE(v2.empty() == true);
 }
 
-TEST_CASE("testing shortest path") {
+TEST_CASE("testing shortest path in weighted graph") {
   weighted_graph<int> g("undirected");
   g.add_edge(1, 2, 5);
   g.add_edge(3, 4, 1);
@@ -26,7 +26,7 @@ TEST_CASE("testing shortest path") {
   REQUIRE(g.shortest_path(1, 8) == 12);
 }
 
-TEST_CASE("testing conected components") {
+TEST_CASE("testing conected components in weighted graph") {
   weighted_graph<int> g("undirected"), g2("undirected");
   g.add_edge(1, 2, 6);
   g.add_edge(2, 3, 6);
@@ -40,7 +40,7 @@ TEST_CASE("testing conected components") {
   REQUIRE(g2.connected_components() == 1);
 }
 
-TEST_CASE("testing cycle detection") {
+TEST_CASE("testing cycle detection in weighted graph") {
   weighted_graph<int> g("undirected");
   g.add_edge(0, 1, 0);
   g.add_edge(2, 3, 4);
@@ -56,7 +56,7 @@ TEST_CASE("testing cycle detection") {
   REQUIRE(g2.cycle() == false);
 }
 
-TEST_CASE("testing shortest path in DAG") {
+TEST_CASE("testing shortest path in DAG in weighted graph") {
   weighted_graph<int> g2("directed");
   g2.add_edge(0, 1, 10);
   g2.add_edge(2, 3, 8);
@@ -73,7 +73,7 @@ TEST_CASE("testing shortest path in DAG") {
   REQUIRE(g3.shortest_path(0, 6) == 1);
 }
 
-TEST_CASE("testing mst with prim's algo") {
+TEST_CASE("testing mst with prim's algo in weighted graph") {
   weighted_graph<int> g("directed");
   g.add_edge(1, 2, 2);
   g.add_edge(0, 1, 0);
@@ -83,7 +83,7 @@ TEST_CASE("testing mst with prim's algo") {
   REQUIRE(g.prim(0) == 3);
 }
 
-TEST_CASE("testing bipartite graph") {
+TEST_CASE("testing bipartite graph in weighted graph") {
   weighted_graph<char> g("undirected");
   g.add_edge('a', 'b', 1);
   g.add_edge('b', 'c', 2);
@@ -92,7 +92,7 @@ TEST_CASE("testing bipartite graph") {
   REQUIRE(g.bipartite() == true);
 }
 
-TEST_CASE("testing size") {
+TEST_CASE("testing size in weighted graph") {
   weighted_graph<int> g("undirected");
   g.add_edge(1, 2, 4);
   g.add_edge(4, 5, 6);
@@ -106,7 +106,7 @@ TEST_CASE("testing size") {
   REQUIRE(g.size() == 8);
 }
 
-TEST_CASE("testing if an edge exist") {
+TEST_CASE("testing if an edge exist in weighted graph") {
   weighted_graph<char> g("directed");
   g.add_edge('a', 'c', 5);
   g.add_edge('a', 'd', 5);
@@ -125,7 +125,7 @@ TEST_CASE("testing if an edge exist") {
   REQUIRE(g2.has_edge(1, 5) == false);
 }
 
-TEST_CASE("testing bridge detection") {
+TEST_CASE("testing bridge detection in weighted graph") {
   weighted_graph<int> g("undirected");
   g.add_edge(1, 0, 5);
   g.add_edge(0, 2, 10);
@@ -137,7 +137,7 @@ TEST_CASE("testing bridge detection") {
   REQUIRE(g.bridge(0) == bridges);
 }
 
-TEST_CASE("testing connectivity") {
+TEST_CASE("testing connectivity in weighted graph") {
   weighted_graph<int> g("undirected");
   g.add_edge(1, 0, 10);
   g.add_edge(0, 2, 15);
@@ -153,7 +153,7 @@ TEST_CASE("testing connectivity") {
   REQUIRE(g2.connected() == false);
 }
 
-TEST_CASE("testing eulerian check") {
+TEST_CASE("testing eulerian check in weighted graph") {
   weighted_graph<int> g("undirected");
   g.add_edge(1, 3, 5);
   g.add_edge(1, 0, 10);
@@ -182,7 +182,7 @@ TEST_CASE("testing eulerian check") {
   REQUIRE(g3.eulerian() == 2);
 }
 
-TEST_CASE("testing bellman ford algorithm") {
+TEST_CASE("testing bellman ford algorithm in weighted graph") {
   weighted_graph<int> g2("undirected");
   g2.add_edge(1, 2, 11);
   g2.add_edge(2, 0, 10);
@@ -209,4 +209,31 @@ TEST_CASE("testing bellman ford algorithm") {
   check2[3] = -std::numeric_limits<double>::infinity();
   check2[1] = -std::numeric_limits<double>::infinity();
   REQUIRE(check2 == test2);
+}
+
+TEST_CASE("testing copy constructor for weighted graph class") {
+  weighted_graph<int> g2("undirected");
+  g2.add_edge(1, 2, 11);
+  g2.add_edge(2, 0, 10);
+  g2.add_edge(1, 0, 8);
+  g2.add_edge(0, 3, 4);
+  g2.add_edge(3, 4, 3);
+
+  weighted_graph<int> g3(g2);
+  REQUIRE(g2.dfs(1) == g3.dfs(1));
+  REQUIRE(g2.dfs(0) == g3.dfs(0));
+}
+
+TEST_CASE("testing operator = for weighted graph class") {
+  weighted_graph<std::string> g("undirected");
+  g.add_edge("a", "b", 12);
+  g.add_edge("b", "c", 10);
+  g.add_edge("c", "w", 110);
+  g.add_edge("w", "b", 2);
+  g.add_edge("a", "g", 5);
+
+  weighted_graph<std::string> g2("undirected");
+  g2 = g;
+  REQUIRE(g.dfs("a") == g2.dfs("a"));
+  REQUIRE(g.dfs("b") == g2.dfs("b"));
 }

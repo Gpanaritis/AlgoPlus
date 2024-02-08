@@ -1,11 +1,12 @@
+#pragma once
 #ifndef KADANE_H
 #define KADANE_H
 
 #ifdef __cplusplus
+#include <cstdint>
 #include <iostream>
 #include <vector>
 #include <climits>
-#include <cstdint>
 #endif
 
 /**

@@ -3,7 +3,7 @@
 #include <string>
 
 // TEST DOES NOT PASS
-TEST_CASE("testing push back") {
+TEST_CASE("testing push back in doubly list") {
   doubly_linked_list<int> l1;
   doubly_linked_list<char> l2;
   doubly_linked_list<std::string> l3;
@@ -30,7 +30,7 @@ TEST_CASE("testing push back") {
   REQUIRE(__v == __elem);
 }
 
-TEST_CASE("testing push front") {
+TEST_CASE("testing push front in doubly list") {
   doubly_linked_list<int> l1;
   doubly_linked_list<char> l2;
   doubly_linked_list<std::string> l3;
@@ -56,7 +56,7 @@ TEST_CASE("testing push front") {
   REQUIRE(__v == __elem);
 }
 
-TEST_CASE("testing search") {
+TEST_CASE("testing search in doubly list") {
   doubly_linked_list<int> l1({3, 5, 7, 8});
   doubly_linked_list<char> l2({'a', 'v', 'd'});
   doubly_linked_list<std::string> l3({"hello", "there", "everyone"});
@@ -69,7 +69,7 @@ TEST_CASE("testing search") {
   REQUIRE(l3.search("hellos") == false);
 }
 
-TEST_CASE("testing erase") {
+TEST_CASE("testing erase in doubly list") {
   doubly_linked_list<int> l({4, 5, 6, 7, 8});
   REQUIRE(l.search(4) == true);
   REQUIRE(l.search(7) == true);
@@ -81,7 +81,7 @@ TEST_CASE("testing erase") {
   REQUIRE(l.search(6) == false);
 }
 
-TEST_CASE("testing reverse") {
+TEST_CASE("testing reverse in doubly list") {
   doubly_linked_list<int> l;
   l.push_back(10);
   l.push_back(11);
@@ -93,7 +93,7 @@ TEST_CASE("testing reverse") {
   REQUIRE(els == v);
 }
 
-TEST_CASE("testing iterators") {
+TEST_CASE("testing iterators in doubly list") {
   doubly_linked_list<int> l({1, 5, 6, 3, 2, 4});
   std::vector<int> v = l.elements();
   std::vector<int> check;
@@ -101,4 +101,31 @@ TEST_CASE("testing iterators") {
     check.push_back(*(it));
   }
   REQUIRE(v == check);
+
+  auto it = l.begin();
+  std::vector<int> v2;
+  v2.push_back(*(it));
+  it++;
+  v2.push_back(*(it));
+  it--;
+  v2.push_back(*(it));
+  std::vector<int> check2 = {1, 5, 1};
+  REQUIRE(v2 == check2);
+}
+
+TEST_CASE("testing copy constructors in doubly list") {
+  doubly_linked_list<int> l({1, 5, 12, 7, 8, 4});
+  doubly_linked_list<int> l2(l);
+  std::vector<int> v = l.elements();
+  std::vector<int> v2 = l2.elements();
+  REQUIRE(v == v2);
+}
+
+TEST_CASE("testing operator = in doubly list") {
+  doubly_linked_list<int> l({1, 5, 12, 7, 8, 4});
+  std::vector<int> v = l.elements();
+  doubly_linked_list<int> l2;
+  l2 = l;
+  std::vector<int> v2 = l2.elements();
+  REQUIRE(v2 == v);
 }

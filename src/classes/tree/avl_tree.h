@@ -1,3 +1,4 @@
+#pragma once
 #ifndef AVL_TREE_H
 #define AVL_TREE_H
 
@@ -27,6 +28,31 @@ public:
       }
     }
   }
+
+  /**
+   * @brief Copy constructor for avl tree class
+   * @param a the tree we want to copy
+   */
+  explicit avl_tree(const avl_tree &a) {
+    root = a.root;
+    __size = a.__size;
+  }
+
+  /**
+   * @brief operator = for avl tree class
+   * @param a the tree we want to copy
+   * @return avl_tree&
+   */
+  avl_tree &operator=(const avl_tree &a) {
+    root = a.root;
+    __size = a.__size;
+    return *this;
+  }
+
+  /**
+   * @brief Destroy the avl tree object
+   *
+   */
   ~avl_tree() noexcept {}
 
   /**
@@ -138,7 +164,7 @@ public:
    */
   void visualize() {
     std::string __generated = generate_visualization();
-    visualization::visualize(__generated);
+    tree_visualization::visualize(__generated);
   }
 
 private:
@@ -369,6 +395,29 @@ public:
   Iterator operator++(int) {
     Iterator it = *this;
     ++*(this);
+    return it;
+  }
+
+  /**
+   * @brief operator -- for type Iterator
+   *
+   * @return Iterator&
+   */
+  Iterator &operator--() {
+    if (this->index > 0) {
+      this->index--;
+    }
+    return *(this);
+  }
+
+  /**
+   * @brief operator -- for type Iterator
+   *
+   * @return Iterator
+   */
+  Iterator operator--(int) {
+    Iterator it = *this;
+    --*(this);
     return it;
   }
 
